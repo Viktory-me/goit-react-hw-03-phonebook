@@ -9,16 +9,26 @@ import ContactList from "./Components/ContactList/ContactList";
 
 class App extends Component {
   state = {
-    contacts: [
-      { id: "id-1", name: "Rosie Simpson", number: "459-12-56" },
-      { id: "id-2", name: "Hermione Kline", number: "443-89-12" },
-      { id: "id-3", name: "Eden Clements", number: "645-17-79" },
-      { id: "id-4", name: "Annie Copeland", number: "227-91-26" },
-    ],
+    contacts: [],
     filter: "",
     name: "",
     number: "",
   };
+
+  componentDidMount() {
+    const contacts = localStorage.getItem("contacts");
+    const parsedContacts = JSON.parse(contacts);
+
+    if (parsedContacts) {
+      this.setState({ contacts: parsedContacts });
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.contacts !== prevState.contacts) {
+      localStorage.setItem("contacts", JSON.stringify(this.state.contacts));
+    }
+  }
 
   addContact = ({ name, number }) => {
     if (this.state.contacts.find((contact) => contact.name === name)) {
@@ -54,15 +64,7 @@ class App extends Component {
       ),
     }));
   };
-  componentDidMount() {
-    console.log('componentDidMount');
 
-    const parsedContacts = JSON.parse(localStorage.getItem('contacts'));
-
-    if (parsedContacts) {
-      this.setState({ contacts: parsedContacts });
-    }
-  }
   render() {
     const visibleContacts = this.getVisibleContacts();
     const { filter } = this.state;

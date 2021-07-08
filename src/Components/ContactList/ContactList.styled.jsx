@@ -10,7 +10,7 @@ export const ItemContact = styled.li`
   padding: 5px 0 5px 0;
   display: flex;
   align-items: center;
-  justify-content: space-evenly;
+  justify-content: space-between;
 `;
 
 export const Paragraph = styled.p`
